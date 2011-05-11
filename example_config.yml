@@ -1,0 +1,4 @@
+# indextank settings
+indextank_index: my_index
+indextank_api_url: http://:myapikey@myapi.api.indextank.com
+indextank_excludes: [index.html, 404.html]
