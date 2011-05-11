@@ -68,7 +68,10 @@ module Jekyll
       items.each do |item|              
         page_text = extract_text(site,item)
         
-        @index.document(item.location_on_server).add({ :text => page_text})
+        @index.document(item.location_on_server).add({ 
+          :text => page_text,
+          :title => item.data['title'] || item.name 
+        })
         @last_indexed[item.location_on_server] = Time.now
         puts 'Indexed ' << item.location_on_server
       end
