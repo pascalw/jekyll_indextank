@@ -1,4 +1,4 @@
-## Jekyll + indextank == Static websites with powerful full-text search
+## Jekyll + indextank = Static websites with powerful full-text search
 
 ### How to use:
 * Place jekyll_indextank.rb inside the _plugins folder in the root of your jekyll site.
@@ -8,5 +8,11 @@ All pages' main content will be indexed at indextank, now all you have to do is 
 to a form to query the [indextank api](http://indextank.com/documentation/api#searching).  
 Note that, while at the time of writing, the indextank api docs do not show that the search api supports jsonp, it does.
 Just add `&callback=mycallback` to the api call.
+
+### Requirements
+Jekyll_indextank requires the following gems:
+
+* indextank
+* nogogiri
 
 For an example of available config settings, see example_config.yml.
