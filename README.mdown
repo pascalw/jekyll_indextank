@@ -30,3 +30,6 @@ Jekyll_indextank requires the following gems:
 * nogogiri
 
 For an example of available config settings, see example_config.yml.
+
+### Notes
+Please note that you should not consider this software stable yet. I think it's pretty useful already, but currently it's more of a proof of concept. I am planning on continuing development, so stay tuned.  
