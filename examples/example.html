@@ -1,0 +1,37 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> 
+<script type="text/javascript">
+	//just a quick example, in no way pretty code.
+  
+  $(document).ready(function() {
+   	$('form#search').submit(function() {
+			search($('input#query').val());
+      return false;
+   	}); 
+  });
+
+  function search(query) {
+    //Try searching for 'Python', 'Hyde', 'Linux'. Note that I didn't index all my posts yet, so you won't be able to find all my posts.
+    var result = $.getJSON('http://8xh3a.api.indextank.com/v1/indexes/pwiddershoven_nl/search?q=' + encodeURIComponent(query) + '&fetch=title&snippet=text&callback=?', function(data) {
+    	$.each(data.results, function(index, result) {
+        $('div#results').html('<div id="result">\
+      			<p><a href="http://pwiddershoven.nl' + result.docid + '">' + result.title + '</a><br/>\
+      			' + result.snippet_text + '</p>\
+    		</div')
+    	});
+    });
+  }
+</script>
+</head>
+<body>
+  <form id="search">
+		<input type="text" id="query" name="query"/>
+    <input type="submit"/>
+  </form>
+
+  <div id="results">
+  </div>
+</body> 
+</html>

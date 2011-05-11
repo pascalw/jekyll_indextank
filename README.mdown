@@ -23,6 +23,8 @@ The "docid" field contains the absolute url (minus domain name) to the matched r
     	alert(json.results); //you might want to approve usability a bit ;-)
 	});
 
+  See examples/example.html for a basic example, showing results in a div.
+
 ### Requirements
 Jekyll_indextank requires the following gems:
 
