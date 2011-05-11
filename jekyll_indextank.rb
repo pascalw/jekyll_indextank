@@ -114,6 +114,5 @@ module Jekyll
       ENV[homes.detect {|h| ENV[h] != nil}]
     end
     
-  end
-  
+  end 
 end
