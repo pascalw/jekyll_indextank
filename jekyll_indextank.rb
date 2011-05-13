@@ -57,9 +57,17 @@ module Jekyll
       puts 'Indexing pages...'
     
       items = site.pages.dup.concat(site.posts)
-      items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| i.location_on_server.include?(s)}}
-      items = items.map {|i| i if @last_indexed[i.location_on_server].nil? || File.mtime(i.full_path_to_source) > @last_indexed[i.location_on_server] }.reject(&:nil?)
+
+      # only process files that will be converted to .html and only non excluded files 
+      items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| i.location_on_server.include?(s) } }
+			items.reject! {|i| i.data['exclude_from_search'] } 
       
+      # only process items that are changed since last regeneration
+      items = items.find_all {|i| @last_indexed[i.location_on_server].nil? || File.mtime(i.full_path_to_source) > @last_indexed[i.location_on_server] }
+
+      # dont process index pages
+			items.reject! {|i| i.is_a?(Jekyll::Page) && i.index? }
+			      
       while not @index.running?
         # wait for the indextank index to get ready
         sleep 0.5
@@ -67,7 +75,7 @@ module Jekyll
       
       items.each do |item|              
         page_text = extract_text(site,item)
-        
+
         @index.document(item.location_on_server).add({ 
           :text => page_text,
           :title => item.data['title'] || item.name 
