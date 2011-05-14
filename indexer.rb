@@ -4,33 +4,7 @@ require 'nokogiri'
 
 module Jekyll
 
-  class Post
-    # @origin https://github.com/kinnetica/jekyll-plugins/blob/master/sitemap_generator.rb
-    attr_accessor :name
-
-    def full_path_to_source
-      File.join(@base, @name)
-    end
-
-    def location_on_server
-      "#{url}"
-    end
-  end
-
-  class Page
-    # @origin https://github.com/kinnetica/jekyll-plugins/blob/master/sitemap_generator.rb
-    attr_accessor :name
-
-    def full_path_to_source
-      File.join(@base, @dir, @name)
-    end
-
-    def location_on_server
-      "#{@dir}#{url}"
-    end
-  end
-
-  class Indexer < Generator
+	class Indexer < Generator
 
     def initialize(config = {})
       super(config)
@@ -60,7 +34,7 @@ module Jekyll
       items = site.pages.dup.concat(site.posts)
 
       # only process files that will be converted to .html and only non excluded files 
-      items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| i.location_on_server.include?(s) } }
+     	items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| (i.absolute_url =~ Regexp.new(s)) != nil } } 
 			items.reject! {|i| i.data['exclude_from_search'] } 
       
       # only process items that are changed since last regeneration
@@ -77,11 +51,11 @@ module Jekyll
       items.each do |item|              
         page_text = extract_text(site,item)
 
-        @index.document(item.location_on_server).add({ 
+        @index.document(item.absolute_url).add({ 
           :text => page_text,
           :title => item.data['title'] || item.name 
         })
-        puts 'Indexed ' << item.location_on_server
+        puts 'Indexed ' << item.absolute_url
       end
       
       @last_indexed = Time.now
