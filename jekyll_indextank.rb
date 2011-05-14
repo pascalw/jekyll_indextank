@@ -42,7 +42,7 @@ module Jekyll
       @last_indexed_file = File.join(@storage_dir, 'last_index')
       
       create_storage_dir()
-      load_stored_timestamps()
+      load_last_timestamp()
       
       @excludes = config['indextank_excludes'] || []
 
@@ -56,6 +56,7 @@ module Jekyll
     def generate(site)
       puts 'Indexing pages...'
     
+      # gather pages and posts
       items = site.pages.dup.concat(site.posts)
 
       # only process files that will be converted to .html and only non excluded files 
@@ -63,7 +64,7 @@ module Jekyll
 			items.reject! {|i| i.data['exclude_from_search'] } 
       
       # only process items that are changed since last regeneration
-      items = items.find_all {|i| @last_indexed[i.location_on_server].nil? || File.mtime(i.full_path_to_source) > @last_indexed[i.location_on_server] }
+      items = items.find_all {|i| @last_indexed.nil? || File.mtime(i.full_path_to_source) > @last_indexed }
 
       # dont process index pages
 			items.reject! {|i| i.is_a?(Jekyll::Page) && i.index? }
@@ -80,11 +81,12 @@ module Jekyll
           :text => page_text,
           :title => item.data['title'] || item.name 
         })
-        @last_indexed[item.location_on_server] = Time.now
         puts 'Indexed ' << item.location_on_server
       end
       
+      @last_indexed = Time.now
       write_last_indexed()
+      
       puts 'Indexing done'
     end
 
@@ -104,11 +106,11 @@ module Jekyll
       end
     end
 
-    def load_stored_timestamps
+    def load_last_timestamp
       begin
         @last_indexed = File.open(@last_indexed_file, "rb") {|f| Marshal.load(f)}
       rescue
-        @last_indexed = {}
+        @last_indexed = nil
       end
     end
 
