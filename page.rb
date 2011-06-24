@@ -1,6 +1,6 @@
 module Jekyll
 
-	class Page
+  class Page
     # @origin https://github.com/kinnetica/jekyll-plugins/blob/master/sitemap_generator.rb
     attr_accessor :name
 

@@ -4,7 +4,7 @@ require 'nokogiri'
 
 module Jekyll
 
-	class Indexer < Generator
+  class Indexer < Generator
 
     def initialize(config = {})
       super(config)
@@ -34,14 +34,14 @@ module Jekyll
       items = site.pages.dup.concat(site.posts)
 
       # only process files that will be converted to .html and only non excluded files 
-     	items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| (i.absolute_url =~ Regexp.new(s)) != nil } } 
-			items.reject! {|i| i.data['exclude_from_search'] } 
+      items = items.find_all {|i| i.output_ext == '.html' && ! @excludes.any? {|s| (i.absolute_url =~ Regexp.new(s)) != nil } } 
+      items.reject! {|i| i.data['exclude_from_search'] } 
       
       # only process items that are changed since last regeneration
       items = items.find_all {|i| @last_indexed.nil? || File.mtime(i.full_path_to_source) > @last_indexed }
 
       # dont process index pages
-			items.reject! {|i| i.is_a?(Jekyll::Page) && i.index? }
+      items.reject! {|i| i.is_a?(Jekyll::Page) && i.index? }
 			      
       while not @index.running?
         # wait for the indextank index to get ready
