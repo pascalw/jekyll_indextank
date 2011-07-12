@@ -31,11 +31,11 @@ The "docid" field contains the absolute url (minus domain name) to the matched r
 Jekyll_indextank requires the following gems:
 
 * indextank
-* nogogiri
+* nokogiri
 
 For an example of available config settings, see example_config.yml.
 
 ### Installation
-* gem install indextank nogogiri
+* gem install indextank nokogiri
 * rake build
 * copy build/jekyll_indextank.rb to your hyde site's _plugins folder
