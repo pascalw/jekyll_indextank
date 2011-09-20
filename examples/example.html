@@ -13,10 +13,11 @@
   });
 
   function search(query) {
-    //Try searching for 'Python', 'Hyde', 'Linux'. Note that I didn't index all my posts yet, so you won't be able to find all my posts.
+    //Try searching for 'Python', 'Hyde', 'Linux'.
     var result = $.getJSON('http://8xh3a.api.indextank.com/v1/indexes/pwiddershoven_nl/search?q=' + encodeURIComponent(query) + '&fetch=title&snippet=text&callback=?', function(data) {
+      $('div#results').empty();
     	$.each(data.results, function(index, result) {
-        $('div#results').html('<div id="result">\
+        $('div#results').append('<div id="result">\
       			<p><a href="http://pwiddershoven.nl' + result.docid + '">' + result.title + '</a><br/>\
       			' + result.snippet_text + '</p>\
     		</div')
