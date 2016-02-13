@@ -1,3 +1,9 @@
+require 'fileutils'
+
 task :build do
-  system('mkdir -p build; ls *.rb | while read file; do cat $file; echo ""; done > build/jekyll_indextank.rb')
+  FileUtils.mkdir_p('./build')
+
+  File.open('build/jekyll_indextank.rb','w') do |output|
+    Dir.glob('*.rb').each{|f| output.write(File.read(f) << "\n")}
+  end
 end
